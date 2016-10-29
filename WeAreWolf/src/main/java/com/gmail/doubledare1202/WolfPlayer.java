@@ -7,8 +7,6 @@ import java.util.List;
 
 public class WolfPlayer{
 	private String wolfPlayer = "aaa";
-	private Role role;
-	private Team team;
 	//List<データ型> リストの名前 = new ArrayList<データ型>();
 	private List<String> wolfJoinPlayer = new ArrayList<String>();
 	private List<String> wolfGameMasterPlayer = new ArrayList<String>();
@@ -21,19 +19,6 @@ public class WolfPlayer{
 
 	public WolfPlayer(){
 
-	}
-
-	public Role getRole(){
-		return role;
-	}
-	public void setRole(Role role) {
-		this.role = role;
-	}
-	public Team getTeam() {
-		return team;
-	}
-	public void setTeam(Team team) {
-		this.team = team;
 	}
 
 	public String getWolfPlayer() {
@@ -96,6 +81,6 @@ public class WolfPlayer{
 	public void setWolfGameMasterPlayer(List<String> wolfGameMasterPlayer) {
 		this.wolfGameMasterPlayer = wolfGameMasterPlayer;
 	}
-	
-	
+
+
 }

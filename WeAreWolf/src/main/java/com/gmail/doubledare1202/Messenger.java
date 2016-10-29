@@ -12,9 +12,11 @@ public class Messenger {
 		if (message != null) {
 			message = message.replaceAll("%world", world)
 					.replaceAll("%version", "1.0-alpha")
-					.replaceAll("%[pl]", "&e[We're Wolf]")
 					.replaceAll("%pl", "&eWe're Wolf")
-					.replaceAll("%sender", sender.getName());
+					.replaceAll("%logo", "&e[We're Wolf]")
+					//.replaceAll("%pl", "&eWe're Wolf")
+					.replaceAll("%=", "&c====");
+					//.replaceAll("%sender", sender.getName());
 					//.replaceAll("%player", player.getName());
 			message = ChatColor.translateAlternateColorCodes('&',message);
 			if (cost != null) {

@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.gmail.doubledare1202.oneNight.ONTurnNight;
+import com.gmail.doubledare1202.oneNight.OneNight;
+
 public class WereWolfExecutor {
 	private static List<String> playerList = new ArrayList<String>();
 	private static int day;

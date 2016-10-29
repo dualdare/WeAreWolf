@@ -2,9 +2,6 @@ package com.gmail.doubledare1202;
 
 import java.io.IOException;
 
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -38,13 +35,13 @@ public class WeAreWolf extends JavaPlugin {
 		//pm.addPermission(debugPermisson);
 		//pm.addPermission(joinPermisson);
 
-
-	    try {
-	        Metrics metrics = new Metrics(this);
-	        metrics.start();
-	    } catch (IOException e) {
-	        // Failed to submit the stats :-(
-	    }
+		// GOOOOOOO Metrics
+		try {
+			Metrics metrics = new Metrics(this);
+			metrics.start();
+		} catch (IOException e) {
+			// Failed to submit the stats :-(
+		}
 
 	}
 
@@ -54,6 +51,7 @@ public class WeAreWolf extends JavaPlugin {
 		getLogger().info("onDisableメソッドが呼び出されたよ！！");
 	}
 
+	/*
 	public void message(CommandSender sender, Player player, String message,
 			String value, String world, String target, Double cost) {
 		if (message != null) {
@@ -89,5 +87,6 @@ public class WeAreWolf extends JavaPlugin {
 			}
 		}
 	}
+	 */
 
 }
