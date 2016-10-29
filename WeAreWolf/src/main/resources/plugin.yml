@@ -1,0 +1,28 @@
+name: WeAreWolf
+main: com.gmail.doubledare1202.WeAreWolf
+version: 1.0alpha
+author: dualdare
+authors: [Valrix]
+website: http://bit.ly/bukkitdevcolorme
+website: http://bit.ly/colormebukkit
+description: Sets custom color, prefixes and suffixes to player's name
+commands:
+    wr:
+        usage: /<command>
+        aliases: [wr, wearewolf]
+        description: Gives the player name a color
+permissions:
+    wearewolf.*:
+        children:
+            wearewolf.GM: true
+            wearewolf.join: true
+            wearewolf.debug: true
+    wearewolf.GM:
+        default: true
+        description: Allows setting of own color
+    wearewolf.join:
+        default: true
+        description: This is werewolfgame join
+    wearewolf.debug:
+        default: op
+        description: debug command you use
