@@ -1,6 +1,8 @@
 package com.gmail.doubledare1202.oneNight;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
@@ -11,7 +13,7 @@ import com.gmail.doubledare1202.Role;
 import com.gmail.doubledare1202.WereWolfExecutor;
 
 public class ONTurnNoon {
-	private static Map<String,Role> playerRoleMap = new HashMap<String,Role>();
+	private static Map<String,Role> playerRoleMap = WereWolfExecutor.getPlayerRoleMap();
 
 	//誰が誰に何票投票したかを保管するＭＡＰ
 	private static Map<String,Integer> playerVoteNum = new HashMap<String,Integer>();
@@ -22,6 +24,15 @@ public class ONTurnNoon {
 	//何票集まったかだけを記憶するLisi<int>
 	private static int[] voteNumArray;
 
+	//どの役職が何人いるか
+	private static int[] NumOfRolePlayer = new int[4];
+
+	//投票完了した役職ごとの人数
+	private static int[] NumOfVotedPlayer = new int[4];
+
+	private static List<String> finishVotePlayer = new ArrayList<String>();
+
+	private static String msg;
 
 	public ONTurnNoon(){
 		//countVotePlayer = 0;
@@ -29,7 +40,8 @@ public class ONTurnNoon {
 	public static void startNoonTurn() {
 		countVotePlayer = 0;
 		WereWolfExecutor.setTurn(false);
-		ONTurnNoon.playerRoleMap = WereWolfExecutor.getPlayerRoleMap();
+		finishVotePlayer.clear();
+		//ONTurnNoon.playerRoleMap = WereWolfExecutor.getPlayerRoleMap();
 
 		//playerVoteNumをまず作る　←これ絶対初期化のときに書くべきだろ
 		for(int i = 0; i < WereWolfExecutor.getPlayerList().size();i++){
@@ -42,89 +54,83 @@ public class ONTurnNoon {
 			//plugin.message(sender,null,msg,null,null,null,null);
 			if(data == Role.WEREWOLF){
 				ONWereWolf.noonTurnWolf(key);
+				NumOfRolePlayer[0]++;
 			}else if(data == Role.PHANTOM){
 				ONPhantom.nooonTurnPhantom(key);
-				//WereWolfExecutor.setCountSEandPT();
+				NumOfRolePlayer[1]++;
 			}else if(data == Role.SEER){
 				ONSeer.noonTurnSeer(key);
-				//WereWolfExecutor.setCountSEandPT();
+				NumOfRolePlayer[2]++;
 			}else if(data == Role.VILLAGER){
 				ONVillager.noonTurnVillager(key);
+				NumOfRolePlayer[3]++;
 			}
 		}
 
 	}
-
-	public static void voteCommand(CommandSender sender , String player){
-		//if(WereWolfExecutor.isTurn() == false && WereWolfExecutor.getDay() == 1 && WereWolfExecutor.isOnGame()){
-		/*
-		playerVoteNum.put(sender.getName(), player);
-		countVotePlayer++;
-		for(String key : playerVoteNum.keySet()){
-			String data = playerVoteNum.get(key);
-			if(data == player){
-
-
-			}
-		}
-
-		voteNumArray = new int[playerRoleMap.size()];
+	/*//廃止したクラス　一人一票投票は違うところでやるよ
+	public static void voteCommandForEachRole(CommandSender sender,String player){
 		for(String key : playerRoleMap.keySet()){
 			Role data = playerRoleMap.get(key);
-
-
+			//msg = key + "の役職は" + data + "です";
+			//plugin.message(sender,null,msg,null,null,null,null);
+			if(data == Role.WEREWOLF){
+				ONWereWolf.vote(sender,player);
+			}else if(data == Role.PHANTOM){
+				ONPhantom.vote(sender,player);
+			}else if(data == Role.SEER){
+				ONSeer.vote(sender,player);
+			}else if(data == Role.VILLAGER){
+				ONVillager.vote(sender,player);
+			}
 		}
+	}
+	 */
 
-
-			//playerVoteNum をまず作らなきゃだめじゃん
-			for(int i = 0; i < WereWolfExecutor.getPlayerList().size();i++){
-				playerVoteNum.put(WereWolfExecutor.getPlayerList().get(i), 0);
-			}*/
-
-		for(String key : playerVoteNum.keySet()){
-
-			//
-			//一人一回投票にするようにする判定を書く
-			//
-			Integer data = playerVoteNum.get(key);
-			String msg = "投票カウント繰り返し判定";
-			Messenger.message(sender, null, msg, null, null, null, null);
-			if(key.contentEquals(player)){
-				int i = data.intValue();
-				//msg = "key == player にはいった";
-				Messenger.message(sender, null, "intValue = " + i, null, null, null, null);
-				i++;
-
-				//msg = "key == player にはいった";
-				Messenger.message(sender, null, "i++=" + i, null, null, null, null);
-
-				playerVoteNum.put(key, i);
-				//data = (Integer)i;
-				//data++;
-
-				msg = "key == player にはいった";
+	public static void voteCommand(CommandSender sender , String player){
+		if(canVotePlayer(sender.getName())){
+			for(String key : playerVoteNum.keySet()){
+				Integer data = playerVoteNum.get(key);
+				String msg = "投票カウント繰り返し判定";
 				Messenger.message(sender, null, msg, null, null, null, null);
+				if(key.contentEquals(player)){
+					int i = data.intValue();
+					i++;
+					playerVoteNum.put(key, i);
+					break;//一回でも一致したらいいかたぬけちゃう
+				}
 			}
-		}
-		countVotePlayer++;
 
-		String msg = "あなたは" + player + "に投票しました";
-		Messenger.message(sender,null,msg,null,null,null,null);
-		if(countVotePlayer == WereWolfExecutor.getPlayerRoleMap().size()){
-			//勝利判定に移ります
-			ONJudgeWinner.judge();
-			for(String key: playerRoleMap.keySet()){
-				msg = "judgeに移動する";
-				Messenger.message(null,Bukkit.getPlayer(key),msg,null,null,null,null);
+			countVotePlayer++;
+
+			msg = "%logo&fあなたは&e" + player + "&fに投票しました";
+			Messenger.message(sender,null,msg,null,null,null,null);
+			if(countVotePlayer == WereWolfExecutor.getPlayerRoleMap().size()){
+				//勝利判定に移ります
+				ONJudgeWinner.judge();
+				for(String key2: playerRoleMap.keySet()){
+					msg = "judgeに移動する";
+					Messenger.message(null,Bukkit.getPlayer(key2),msg,null,null,null,null);
+				}
 			}
+
+		}else{
+			msg = "%logo&eあなたはすでに投票を終えています";
+			Messenger.message(sender,null,msg,null,null,null,null);
 		}
-		//}else{
-		//	String msg = "このコマンド人狼に参加しているプレイヤーのみが実行できます。";
-		//	Messenger.message(sender, null, msg, null, null, null, null);
-		//}
 	}
 
 	public static Map<String, Integer> getPlayerVoteNum(){
 		return playerVoteNum;
+	}
+
+	//プレイヤーが一人一回までしか投票できなくする
+	public static boolean canVotePlayer(String player){
+		if(finishVotePlayer.contains(player)){
+			return false;
+		}else{
+			finishVotePlayer.add(player);
+			return true;
+		}
 	}
 }

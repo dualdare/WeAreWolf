@@ -1,6 +1,5 @@
 package com.gmail.doubledare1202.oneNight;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.command.CommandSender;
@@ -10,7 +9,7 @@ import com.gmail.doubledare1202.Role;
 import com.gmail.doubledare1202.WereWolfExecutor;
 
 public class ONTurnNight {
-	private static Map<String,Role> playerRoleMap = new HashMap<String,Role>();
+	private static Map<String,Role> playerRoleMap = WereWolfExecutor.getPlayerRoleMap();
 	//private static int countSEandPT = 0;
 
 
@@ -19,7 +18,7 @@ public class ONTurnNight {
 	}
 
 	public static void startNightTurn() {
-		ONTurnNight.playerRoleMap = WereWolfExecutor.getPlayerRoleMap();
+		//ONTurnNight.playerRoleMap = WereWolfExecutor.getPlayerRoleMap();
 		for(String key : playerRoleMap.keySet()){
 			Role data = playerRoleMap.get(key);
 			//msg = key + "の役職は" + data + "です";
@@ -38,7 +37,7 @@ public class ONTurnNight {
 	}
 
 	public static void targetCommand(CommandSender sender , String player){
-		ONTurnNight.playerRoleMap = WereWolfExecutor.getPlayerRoleMap();
+		//ONTurnNight.playerRoleMap = WereWolfExecutor.getPlayerRoleMap();
 		if(WereWolfExecutor.isTurn() && WereWolfExecutor.getDay() == 1 && WereWolfExecutor.isOnGame()){
 			for(String key : playerRoleMap.keySet()){
 				//Messenger.message(sender, null, key, null, null, null, null);

@@ -13,6 +13,7 @@ import com.gmail.doubledare1202.WereWolfExecutor;
 public class ONSeer {
 	private static String msg;
 	private static boolean canDivine = true;//falseなら占いできる＝まだ占っていない
+	private static boolean canVote = true;//falseなら投票できる
 
 	//占い師の人数を数える
 	//public static int countSeer = 0;
@@ -21,16 +22,23 @@ public class ONSeer {
 	}
 	//夜のターン　役職占い師のへのメッセージ発信
 	public static void nightTurnSeer(String player){
-
-		msg = "&3あなたは占い師になりました。";
 		Player p = Bukkit.getPlayer(player);
+		msg = "%= %logo - Rule - &aOneNight %e夜のターン %=";
 		Messenger.message(null, p, msg, null, null, null, null);
-		msg = "&3勝利条件は人狼を倒すことです";
+		msg = "あなたは占い師になりました。";
 		Messenger.message(null, p, msg, null, null, null, null);
-		msg = "&3あなたは一人のプレイヤーを占いことができます /wr target <player>";
+		msg = "役職 占い師 人間陣営";
 		Messenger.message(null, p, msg, null, null, null, null);
+		msg = "勝利条件 人間と協力し、人狼の正体を暴くこと。";
+		Messenger.message(null, p, msg, null, null, null, null);
+		msg = "特殊能力-占い 他のプレイヤー1人の役職を占いによって知ることができます。";
+		Messenger.message(null, p, msg, null, null, null, null);
+		msg = "&e/wr target <player> &fで占いたいプレイヤーを指定して占いましょう。";
+		Messenger.message(null, p, msg, null, null, null, null);
+		//msg = "*このコマンドに意味はありませんが、全員がtargetコマンドを実行することで"
+		//		+ "昼のターンに移行します。";
 		canDivine = false;
-		//countSeer = 0;
+
 	}
 
 	public static void divinePlayer(CommandSender sender,String player){
@@ -61,9 +69,27 @@ public class ONSeer {
 
 	public static void noonTurnSeer(String key) {
 		Player p = Bukkit.getPlayer(key);
-		msg = "長い夜が明けました…";
+		msg = "%= %logo - Rule - &aOneNight %e昼のターン %=";
 		Messenger.message(null, p, msg, null, null, null, null);
-		msg = "昼のターンです/wr vote <player>で投票をしてください";
+		msg = "長い夜が明けました。全員目をあけてください。";
 		Messenger.message(null, p, msg, null, null, null, null);
+		msg = "昼のターンです。それでは議論を始めます。";
+		Messenger.message(null, p, msg, null, null, null, null);
+		msg = "&e/wr vote <player> &fで処刑したいプレイヤーに投票しましょう";
+		Messenger.message(null, p, msg, null, null, null, null);
+		msg = "投票数が一番多いプレイヤーが処刑されます。（同票の場合は同票の人全員が処刑されます";
+		Messenger.message(null, p, msg, null, null, null, null);
+
+		canVote = false;
+	}
+
+	public static void vote(CommandSender sender,String player){
+		if(!canVote){
+			canVote = true;
+			ONTurnNoon.voteCommand(sender, player);
+		}else{
+			msg = "占いクラスあなたはもう投票しました。";
+			Messenger.message(sender, null, msg, null, null, null, null);
+		}
 	}
 }

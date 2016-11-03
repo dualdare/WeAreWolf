@@ -1,6 +1,5 @@
 package com.gmail.doubledare1202.oneNight;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
@@ -14,51 +13,46 @@ import com.gmail.doubledare1202.WereWolfExecutor;
 public class ONPhantom {
 	private static String msg;
 	private static boolean canChange = true;//falseで実行可能＝falseのとき他人の心を奪える
-	private static Map<String,Role> playerRoleMap = new HashMap<String,Role>();
-	//private static Map<String,Role> roleList = new HashMap<String,Role>();
 
-	//こいつらは最後の勝利判定クラスで使用する
-	//占い師とかぶるしうまくかけないから入れ替え処理はあとに回すことにした、
 	private static Role stackChangeRole;
 	private static String[] PTChangePlayer= new String[2];
 
 	public static boolean thisGameJoinPhantom = false;//このゲームに怪盗が参加してるとtrue
 
-	//怪盗の人数を数える
-	//public static int countPhantom;
-
-
+	public static boolean canVote = false;
 	private ONPhantom(){
 
 	}
 	//夜のターン　役職怪盗のメッセージ発信
 	public static void nightTurnPhantom(String player){
-		msg = "&3あなたは怪盗になりました。";
 		Player p = Bukkit.getPlayer(player);
-		Messenger.message(null, p, msg, null, null, null, null);
-		msg = "&3勝利条件は人狼が死なないことです";
-		Messenger.message(null, p, msg, null, null, null, null);
-		msg = "&3他の人の心を盗んでください /wr target <player>";
-		Messenger.message(null, p, msg, null, null, null, null);
 		canChange = false;
 		stackChangeRole = null;
 		PTChangePlayer[0] = null;
 		PTChangePlayer[1] = null;
-		//countPhantom = 0;
 
 		thisGameJoinPhantom = true;
+
+		msg = "%= %logo - Rule - &aOneNight %e夜のターン %=";
+		Messenger.message(null, p, msg, null, null, null, null);
+		msg = "あなたは怪盗になりました。";
+		Messenger.message(null, p, msg, null, null, null, null);
+		msg = "役職 怪盗 人間陣営";
+		Messenger.message(null, p, msg, null, null, null, null);
+		msg = "勝利条件 人間と協力し、人狼の正体を暴くこと";
+		Messenger.message(null, p, msg, null, null, null, null);
+		msg = "特殊能力-心変わり 他のプレイヤー1人と自分の役職を入れ替えることができます。";
+		Messenger.message(null, p, msg, null, null, null, null);
+		msg = "&e/wr target <player> で入れ替えるプレイヤーを決めてください。(入れ替えない場合は自分の名前を指定してください)";
+		Messenger.message(null, p, msg, null, null, null, null);
 	}
 
 	public static void changePlayer(CommandSender sender, String player) {
 		Map<String,Role> roleList = WereWolfExecutor.getPlayerRoleMap();
-		//Role a;
 		if(!canChange){
-			//Map<String,Role> roleMap = WereWolfExecutor.getPlayerRoleMap();
 			for(String key : roleList.keySet()){
 				Role data = roleList.get(key);
 				if(key.contentEquals(player)){
-					//msg = "&1[占い結果]" + player + "の役職は" + data + "です";
-					//Messenger.message(sender, null, msg, null, null, null, null);
 					stackChangeRole = data;//入れ替える相手のRoledata
 					PTChangePlayer[0] = sender.getName();//新しい役職になるひと
 					PTChangePlayer[1] = player;//怪盗になるひと
@@ -67,13 +61,6 @@ public class ONPhantom {
 					msg = "あなたは" + stackChangeRole  + "となりました。";
 					Messenger.message(sender, null, msg, null, null, null, null);
 					canChange = true;
-					//心入れ替え処理をここに書く
-					//roleList.remove(player);
-					//roleList.remove(sender.getName());←これはいらない
-					//putするときすでにkeyが存在数ならそれのdataだけを書き換えるから
-
-					//roleList.put(player, Role.PHANTOM);
-					//roleList.put(sender.getName(), a);
 					WereWolfExecutor.countEndTargetPlayer++;
 					if(WereWolfExecutor.countEndTargetPlayer == WereWolfExecutor.getPlayerRoleMap().size()){
 						//昼の投票ターンに移動する
@@ -92,22 +79,25 @@ public class ONPhantom {
 		//setPlayerRoleMap(roleList);
 
 	}
-	public static Map<String,Role> getPlayerRoleMap() {
-		return playerRoleMap;
-	}
-	public static void setPlayerRoleMap(Map<String,Role> playerRoleMap) {
-		ONPhantom.playerRoleMap = playerRoleMap;
-	}
+
 
 	public static boolean getCanChange(){
 		return canChange;
 	}
 	public static void nooonTurnPhantom(String key) {
 		Player p = Bukkit.getPlayer(key);
-		msg = "長い夜が明けました…";
+		msg = "%= %logo - Rule - &aOneNight %e昼のターン %=";
 		Messenger.message(null, p, msg, null, null, null, null);
-		msg = "昼のターンです/wr vote <player>で投票をしてください";
+		msg = "長い夜が明けました。全員目をあけてください。";
 		Messenger.message(null, p, msg, null, null, null, null);
+		msg = "昼のターンです。それでは議論を始めます。";
+		Messenger.message(null, p, msg, null, null, null, null);
+		msg = "&e/wr vote <player> &fで処刑したいプレイヤーに投票しましょう";
+		Messenger.message(null, p, msg, null, null, null, null);
+		msg = "投票数が一番多いプレイヤーが処刑されます。（同票の場合は同票の人全員が処刑されます";
+		Messenger.message(null, p, msg, null, null, null, null);
+
+		canVote = true;
 	}
 
 	public static Role getStackChangeRole(){
@@ -116,6 +106,15 @@ public class ONPhantom {
 
 	public static String[] getPTChangePlayer(){
 		return PTChangePlayer;
+	}
+	public static void vote(CommandSender sender, String player) {
+		if(!canVote){
+			ONTurnNoon.voteCommand(sender, player);
+			canVote = false;
+		}else{
+			msg = "怪盗クラスあなたは投票しました。";
+			Messenger.message(sender, null, msg, null, null, null, null);
+		}
 	}
 
 

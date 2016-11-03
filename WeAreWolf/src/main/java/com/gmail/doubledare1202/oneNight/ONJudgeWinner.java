@@ -125,7 +125,7 @@ public class ONJudgeWinner {
 				String player = killedPlayer.get(i);
 				for(String key : playerRoleMap.keySet()){
 					Role data = playerRoleMap.get(key);
-					if(key.contentEquals(player) && data.getTeam() == Team.WEREWOLF){
+					if(key.contentEquals(player) && (data.getTeam() == Team.WEREWOLF)){
 						//人狼の負け
 						winWereWolf = false;//殺した人の中に人狼がいたら
 					}

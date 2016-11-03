@@ -3,10 +3,14 @@ package com.gmail.doubledare1202;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.command.CommandSender;
+
 
 
 public class WolfPlayer{
-	private String wolfPlayer = "aaa";
+	private String msg;
+
+	private String wolfPlayer = "aaa";//初期かを適当にしておく
 	//List<データ型> リストの名前 = new ArrayList<データ型>();
 	private List<String> wolfJoinPlayer = new ArrayList<String>();
 	private List<String> wolfGameMasterPlayer = new ArrayList<String>();
@@ -25,15 +29,28 @@ public class WolfPlayer{
 		return wolfPlayer;
 	}
 
-	public boolean setWolfPlayer(String wolfPlayer) {
+	public boolean setWolfPlayer(CommandSender sender) {
 		//プレイヤーの名前をリストにぶち込むメソッド
 		//重複しないようにしてます^^
-		if(!wolfJoinPlayer.contains(wolfPlayer)){
-			wolfJoinPlayer.add(wolfPlayer);
+		if(!wolfJoinPlayer.contains(sender.getName())){
+			/*IPアドレス一致判定　テスト時は消す
+			for(int i = 0;i < wolfJoinPlayer.size();i++){
+				Player joinP = Bukkit.getPlayer(wolfJoinPlayer.get(i));
+				if(WeAreWolf.equalsIpAddress((Player) sender, joinP)){
+					msg = "%logo&cあなたと同じIPアドレスから参加しているプレイヤーがすでにいます！";
+					Messenger.message(sender, null, msg, null, null, null, null);
+					return false;
+				}
+			}
+			*/
+			wolfJoinPlayer.add(sender.getName());
+
 			return true;
 		}else{
 			return false;
 		}
+
+
 	}
 
 	public boolean removeWolfPlayer(String wolfPlayer){

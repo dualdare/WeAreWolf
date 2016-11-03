@@ -8,7 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.doubledare1202.oneNight.ONPhantom;
 import com.gmail.doubledare1202.oneNight.ONTurnNight;
 import com.gmail.doubledare1202.oneNight.ONTurnNoon;
 
@@ -108,6 +107,8 @@ public class Actions {
 			msg = "基本的には&e勝利条件&fのとおりですが、もしプレイヤーが全員&b人間陣営の場合は"
 					+ "&a&o平和村&fとなり、全員で協力して投票数を同じにしなくてはなりません";
 			Messenger.message(sender, null, msg, null, null, null, null);
+		}else if(rule == "Normal"){
+			//ノーマルモード実装時用
 		}else{
 			//この前で判定してるからこないはず
 		}
@@ -127,8 +128,13 @@ public class Actions {
 			Messenger.message(sender, null, msg, null, null, null, null);
 			msg = "&e6人以上 &f村人4、占い師1、怪盗1、人狼2";
 			Messenger.message(sender, null, msg, null, null, null, null);
+		}else if(role == "Normal"){
+			//ノーマルモード実装時用
+		}else{
+			//この前で判定してるからこないはず
 		}
 	}
+
 	// Command /wolf gameCreate Executor
 	public void gameCreate(CommandSender sender) {
 
@@ -144,7 +150,7 @@ public class Actions {
 
 	// Command /wolf join Executor
 	public void join(CommandSender sender) {
-		if (wolfPlayer.setWolfPlayer(sender.getName())) {
+		if (wolfPlayer.setWolfPlayer(sender)) {
 			msg = "%logo&6" + sender.getName() + "&fは人狼ゲームの待機部屋に入りました。";
 			Messenger.message(sender, null, msg, null, null, null, null);
 		} else {
@@ -226,7 +232,7 @@ public class Actions {
 			}
 		}else if(args[1].equalsIgnoreCase("normal")){
 			//普通の人狼のときの参加の処理を書く
-			msg = "%logo&fnormalは未実装です。今後のアップデートにご期待ください！";
+			msg = "%logo&fNormalは未実装です。今後のアップデートにご期待ください！";
 			Messenger.message(sender, null, msg, null, null, null, null);
 		}else{
 			msg = "%logo&6正しいゲームルールを入力してください。";
@@ -319,7 +325,6 @@ public class Actions {
 		msg = "%logo&6プレイヤーと役職を表示します";
 		Messenger.message(sender, null, msg, null, null, null, null);
 		// WolfPlayer wolfPlayer = new WolfPlayer(sender.getName());
-		if (ONPhantom.getCanChange()) {// true＝まだ怪盗能力を使っていないなら
 			msg = "怪盗能力使用前";
 			Messenger.message(sender, null, msg, null, null, null, null);
 			Map<String, Role> roleMap = WereWolfExecutor.getPlayerRoleMap();
@@ -328,18 +333,6 @@ public class Actions {
 				msg = key + "&6の役職は&f、" + data + "&6です";
 				Messenger.message(sender, null, msg, null, null, null, null);
 			}
-		} else {// false ＝怪盗能力使用後なら
-			msg = "怪盗能力使用後";
-			Messenger.message(sender, null, msg, null, null, null, null);
-			// class Phantom では変えないことにしたので上と同じ処理
-			// Map<String, Role> roleMap = Phantom.getPlayerRoleMap();
-			Map<String, Role> roleMap = WereWolfExecutor.getPlayerRoleMap();
-			for (String key : roleMap.keySet()) {
-				Role data = roleMap.get(key);
-				msg = key + "&6の役職は&f、" + data + "です";
-				Messenger.message(sender, null, msg, null, null, null, null);
-			}
-		}
 	}
 
 	public void votePlayerList(CommandSender sender) {
