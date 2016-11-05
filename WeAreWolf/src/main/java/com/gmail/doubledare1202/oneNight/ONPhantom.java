@@ -8,10 +8,12 @@ import org.bukkit.entity.Player;
 
 import com.gmail.doubledare1202.Messenger;
 import com.gmail.doubledare1202.Role;
+import com.gmail.doubledare1202.WeAreWolf;
 import com.gmail.doubledare1202.WereWolfExecutor;
+import com.gmail.doubledare1202.WolfUtils;
 
 public class ONPhantom {
-	private static String msg;
+	private static String msg,path;
 	private static boolean canChange = true;//falseで実行可能＝falseのとき他人の心を奪える
 
 	private static Role stackChangeRole;
@@ -32,7 +34,7 @@ public class ONPhantom {
 		PTChangePlayer[1] = null;
 
 		thisGameJoinPhantom = true;
-
+		/*
 		msg = "%= %logo - Rule - &aOneNight %e夜のターン %=";
 		Messenger.message(null, p, msg, null, null, null, null);
 		msg = "あなたは怪盗になりました。";
@@ -45,6 +47,18 @@ public class ONPhantom {
 		Messenger.message(null, p, msg, null, null, null, null);
 		msg = "&e/wr target <player> で入れ替えるプレイヤーを決めてください。(入れ替えない場合は自分の名前を指定してください)";
 		Messenger.message(null, p, msg, null, null, null, null);
+		*/
+		path = "wolf_onni_first";
+		msg = WeAreWolf.japanese.getString(path);
+		Messenger.message(null, p, msg, null, null, null, null);
+
+		int line = 5;
+		for(int i = 0 ; i < line ; i++){
+			path = "wolf_onniph_" + i;
+			msg = WeAreWolf.japanese.getString(path);
+			Messenger.message(null, p, msg, null, null, null, null);
+
+		}
 	}
 
 	public static void changePlayer(CommandSender sender, String player) {
@@ -56,24 +70,35 @@ public class ONPhantom {
 					stackChangeRole = data;//入れ替える相手のRoledata
 					PTChangePlayer[0] = sender.getName();//新しい役職になるひと
 					PTChangePlayer[1] = player;//怪盗になるひと
-					msg =  player + "と心を入れ替えました";
+
+					path = "wolf_onni_ability";
+					msg = WeAreWolf.japanese.getString(path);
 					Messenger.message(sender, null, msg, null, null, null, null);
-					msg = "あなたは" + stackChangeRole  + "となりました。";
-					Messenger.message(sender, null, msg, null, null, null, null);
+					//msg =  player + "と心を入れ替えました";
+					path = "wolf_onniph_changeplayer";
+					msg = WeAreWolf.japanese.getString(path);
+					Messenger.message(sender, null, msg, player, null, null, null);
+					//msg = "あなたは" + stackChangeRole  + "となりました。";
+					path = "wolf_onniph_yourrole";
+					msg = WeAreWolf.japanese.getString(path);//ここせこい
+					Messenger.message(sender, null, msg, WolfUtils.roleToJapanese(stackChangeRole), null, null, null);
 					canChange = true;
+
 					WereWolfExecutor.countEndTargetPlayer++;
 					if(WereWolfExecutor.countEndTargetPlayer == WereWolfExecutor.getPlayerRoleMap().size()){
 						//昼の投票ターンに移動する
 						ONTurnNoon.startNoonTurn();
 					}
 				}else{
-					msg = "怪盗繰り返したけどなかった";
-					Messenger.message(sender, null, msg, null, null, null, null);
+					//msg = "怪盗繰り返したけどなかった";
+					//Messenger.message(sender, null, msg, null, null, null, null);
 				}
 			}
 
 		}else{
-			msg = "あなたはすでに怪盗の能力を使いました！";
+			//msg = "あなたはすでに怪盗の能力を使いました！";
+			path = "wolf_onniph_alreadyability";
+			msg = WeAreWolf.japanese.getString(path);
 			Messenger.message(sender, null, msg, null, null, null, null);
 		}
 		//setPlayerRoleMap(roleList);
@@ -86,6 +111,8 @@ public class ONPhantom {
 	}
 	public static void nooonTurnPhantom(String key) {
 		Player p = Bukkit.getPlayer(key);
+		canVote = true;
+		/*
 		msg = "%= %logo - Rule - &aOneNight %e昼のターン %=";
 		Messenger.message(null, p, msg, null, null, null, null);
 		msg = "長い夜が明けました。全員目をあけてください。";
@@ -96,8 +123,15 @@ public class ONPhantom {
 		Messenger.message(null, p, msg, null, null, null, null);
 		msg = "投票数が一番多いプレイヤーが処刑されます。（同票の場合は同票の人全員が処刑されます";
 		Messenger.message(null, p, msg, null, null, null, null);
+		*/
 
-		canVote = true;
+		int line = 5;
+		for(int i = 0 ; i < line ; i++){
+			path = "wolf_onno_" + i;
+			msg = WeAreWolf.japanese.getString(path);
+			Messenger.message(null, p, msg, null, null, null, null);
+
+		}
 	}
 
 	public static Role getStackChangeRole(){

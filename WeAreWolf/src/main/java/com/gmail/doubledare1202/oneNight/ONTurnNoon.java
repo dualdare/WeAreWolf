@@ -5,11 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import com.gmail.doubledare1202.Messenger;
 import com.gmail.doubledare1202.Role;
+import com.gmail.doubledare1202.WeAreWolf;
 import com.gmail.doubledare1202.WereWolfExecutor;
 
 public class ONTurnNoon {
@@ -32,7 +32,7 @@ public class ONTurnNoon {
 
 	private static List<String> finishVotePlayer = new ArrayList<String>();
 
-	private static String msg;
+	private static String msg,path;
 
 	public ONTurnNoon(){
 		//countVotePlayer = 0;
@@ -91,8 +91,8 @@ public class ONTurnNoon {
 		if(canVotePlayer(sender.getName())){
 			for(String key : playerVoteNum.keySet()){
 				Integer data = playerVoteNum.get(key);
-				String msg = "投票カウント繰り返し判定";
-				Messenger.message(sender, null, msg, null, null, null, null);
+				//String msg = "投票カウント繰り返し判定";
+				//Messenger.message(sender, null, msg, null, null, null, null);
 				if(key.contentEquals(player)){
 					int i = data.intValue();
 					i++;
@@ -103,19 +103,23 @@ public class ONTurnNoon {
 
 			countVotePlayer++;
 
-			msg = "%logo&fあなたは&e" + player + "&fに投票しました";
-			Messenger.message(sender,null,msg,null,null,null,null);
+			//msg = "%logo&fあなたは&e" + player + "&fに投票しました";
+			path = "wolf_onno_youvote";
+			msg = WeAreWolf.japanese.getString(path);
+			Messenger.message(sender,null,msg,player,null,null,null);
 			if(countVotePlayer == WereWolfExecutor.getPlayerRoleMap().size()){
 				//勝利判定に移ります
 				ONJudgeWinner.judge();
 				for(String key2: playerRoleMap.keySet()){
-					msg = "judgeに移動する";
-					Messenger.message(null,Bukkit.getPlayer(key2),msg,null,null,null,null);
+					//msg = "judgeに移動する";
+					//Messenger.message(null,Bukkit.getPlayer(key2),msg,null,null,null,null);
 				}
 			}
 
 		}else{
-			msg = "%logo&eあなたはすでに投票を終えています";
+			//msg = "%logo&eあなたはすでに投票を終えています";
+			path = "wolf_onno_alreadyvote";
+			msg = WeAreWolf.japanese.getString(path);
 			Messenger.message(sender,null,msg,null,null,null,null);
 		}
 	}

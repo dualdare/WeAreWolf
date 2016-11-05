@@ -10,10 +10,11 @@ import org.bukkit.Bukkit;
 import com.gmail.doubledare1202.Messenger;
 import com.gmail.doubledare1202.Role;
 import com.gmail.doubledare1202.Team;
+import com.gmail.doubledare1202.WeAreWolf;
 import com.gmail.doubledare1202.WereWolfExecutor;
 
 public class ONJudgeWinner {
-	private static String msg;
+	private static String msg,path;
 
 	private static Map<String,Role> playerRoleMap = new HashMap<String,Role>();
 	private static Map<String,Integer> voteJudge = new HashMap<String,Integer>();
@@ -44,11 +45,11 @@ public class ONJudgeWinner {
 		if(ONPhantom.thisGameJoinPhantom){
 			playerRoleMap.put(changePlayer[0], stackRolePlayer);
 			playerRoleMap.put(changePlayer[1], Role.PHANTOM);
-			for(String key: playerRoleMap.keySet()){
-				msg = "全員の投票が終わりました。これより勝利判定に移ります";
+			//for(String key: playerRoleMap.keySet()){
+				//msg = "全員の投票が終わりました。これより勝利判定に移ります";
 				//Messenger.message(null,Bukkit.getPlayer(key),msg,null,null,null,null);
-				Messenger.message(null,Bukkit.getPlayer(key),"怪盗入れ替え発動",null,null,null,null);
-			}
+				//Messenger.message(null,Bukkit.getPlayer(key),"怪盗入れ替え発動",null,null,null,null);
+			//}
 		}
 
 		//こっから投票数判定
@@ -133,21 +134,33 @@ public class ONJudgeWinner {
 			}
 		}
 
+		ONTurnNight.clear();//人狼のプレイヤーの配列を消す。人狼クラス
+
 		//全員に出力
 		for(String key: playerRoleMap.keySet()){
-			msg = "全員の投票が終わりました。これより勝利判定に移ります";
+			//msg = "全員の投票が終わりました。これより勝利判定に移ります";
+			path = "wolf_result_first";
+			msg = WeAreWolf.japanese.getString(path);
 			Messenger.message(null,Bukkit.getPlayer(key),msg,null,null,null,null);
 			if(peaceVillage){
-				msg = "&aこの村は平和村です！！！";
+				//msg = "&aこの村は平和村です！！！";
+				path = "wolf_result_peace";
+				msg = WeAreWolf.japanese.getString(path);
 				Messenger.message(null,Bukkit.getPlayer(key),msg,null,null,null,null);
 			}
 			if(winWereWolf){
-				msg = "&l&a人狼陣営の勝ちです！！！おめでとうございます";
+				//msg = "&l&a人狼陣営の勝ちです！！！おめでとうございます";
+				path = "wolf_result_winww";
+				msg = WeAreWolf.japanese.getString(path);
+				Messenger.message(null,Bukkit.getPlayer(key),msg,null,null,null,null);
 			}else{
-				msg = "&l&a村人陣営の勝ちです！！！おめでとうございます";
+				//msg = "&l&a村人陣営の勝ちです！！！おめでとうございます";
+				path = "wolf_result_winhuman";
+				msg = WeAreWolf.japanese.getString(path);
+				Messenger.message(null,Bukkit.getPlayer(key),msg,null,null,null,null);
 			}
 
-			Messenger.message(null,Bukkit.getPlayer(key),msg,null,null,null,null);
+			//Messenger.message(null,Bukkit.getPlayer(key),msg,null,null,null,null);
 		}
 		//msg = "全員の投票が終わりました。これより勝利判定に移ります";
 		//Messenger.message(sender,null,msg,null,null,null,null);

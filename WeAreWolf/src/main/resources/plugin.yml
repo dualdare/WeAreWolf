@@ -7,10 +7,10 @@ website: http://bit.ly/bukkitdevcolorme
 website: http://bit.ly/colormebukkit
 description: Sets custom color, prefixes and suffixes to player's name
 commands:
-    wr:
+    wearewolf:
         usage: /<command>
         aliases: [wr, wearewolf]
-        description: Gives the player name a color
+        description: start werewolf game
 permissions:
     wearewolf.*:
         children:

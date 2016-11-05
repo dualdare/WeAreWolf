@@ -8,10 +8,12 @@ import org.bukkit.entity.Player;
 
 import com.gmail.doubledare1202.Messenger;
 import com.gmail.doubledare1202.Role;
+import com.gmail.doubledare1202.WeAreWolf;
 import com.gmail.doubledare1202.WereWolfExecutor;
+import com.gmail.doubledare1202.WolfUtils;
 
 public class ONSeer {
-	private static String msg;
+	private static String msg,path;
 	private static boolean canDivine = true;//falseなら占いできる＝まだ占っていない
 	private static boolean canVote = true;//falseなら投票できる
 
@@ -22,7 +24,9 @@ public class ONSeer {
 	}
 	//夜のターン　役職占い師のへのメッセージ発信
 	public static void nightTurnSeer(String player){
+		canDivine = false;
 		Player p = Bukkit.getPlayer(player);
+		/*
 		msg = "%= %logo - Rule - &aOneNight %e夜のターン %=";
 		Messenger.message(null, p, msg, null, null, null, null);
 		msg = "あなたは占い師になりました。";
@@ -37,7 +41,19 @@ public class ONSeer {
 		Messenger.message(null, p, msg, null, null, null, null);
 		//msg = "*このコマンドに意味はありませんが、全員がtargetコマンドを実行することで"
 		//		+ "昼のターンに移行します。";
-		canDivine = false;
+
+		 */
+		path = "wolf_onni_first";
+		msg = WeAreWolf.japanese.getString(path);
+		Messenger.message(null, p, msg, null, null, null, null);
+
+		int line = 5;
+		for(int i = 0 ; i < line ; i++){
+			path = "wolf_onnise_" + i;
+			msg = WeAreWolf.japanese.getString(path);
+			Messenger.message(null, p, msg, null, null, null, null);
+
+		}
 
 	}
 
@@ -47,8 +63,13 @@ public class ONSeer {
 			for(String key : roleMap.keySet()){
 				Role data = roleMap.get(key);
 				if(key.contentEquals(player)){
-					msg = "%logo&b[占い結果]&f" + player + "&bの役職は&f" + data + "&bです";
+					//msg = "%logo&b[占い結果]&f" + player + "&bの役職は&f" + data + "&bです";
+					path = "wolf_onni_ability";
+					msg = WeAreWolf.japanese.getString(path);
 					Messenger.message(sender, null, msg, null, null, null, null);
+					path = "wolf_onnise_divineresult";
+					msg = WeAreWolf.japanese.getString(path);
+					Messenger.message(sender, null, msg, player, WolfUtils.roleToJapanese(data), null, null);
 					canDivine = true;
 					WereWolfExecutor.countEndTargetPlayer++;
 					if(WereWolfExecutor.countEndTargetPlayer == WereWolfExecutor.getPlayerRoleMap().size()){
@@ -62,13 +83,17 @@ public class ONSeer {
 				}
 			}
 		}else{//もう占いを実行していたら
-			msg = "あなたはすでに占いました！";
+			//msg = "あなたはすでに占いました！";
+			path = "wolf_onnise_alreadyability";
+			msg = WeAreWolf.japanese.getString(path);
 			Messenger.message(sender, null, msg, null, null, null, null);
 		}
 	}
 
 	public static void noonTurnSeer(String key) {
 		Player p = Bukkit.getPlayer(key);
+		canVote = false;
+		/*
 		msg = "%= %logo - Rule - &aOneNight %e昼のターン %=";
 		Messenger.message(null, p, msg, null, null, null, null);
 		msg = "長い夜が明けました。全員目をあけてください。";
@@ -79,8 +104,15 @@ public class ONSeer {
 		Messenger.message(null, p, msg, null, null, null, null);
 		msg = "投票数が一番多いプレイヤーが処刑されます。（同票の場合は同票の人全員が処刑されます";
 		Messenger.message(null, p, msg, null, null, null, null);
+		*/
+		int line = 5;
+		for(int i = 0 ; i < line ; i++){
+			path = "wolf_onno_" + i;
+			msg = WeAreWolf.japanese.getString(path);
+			Messenger.message(null, p, msg, null, null, null, null);
 
-		canVote = false;
+		}
+
 	}
 
 	public static void vote(CommandSender sender,String player){

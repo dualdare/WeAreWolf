@@ -8,10 +8,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.doubledare1202.Messenger;
+import com.gmail.doubledare1202.WeAreWolf;
 import com.gmail.doubledare1202.WereWolfExecutor;
 
 public class ONVillager {
-	private static String msg;
+	private static String msg,path;
 
 	private static List<String> villagerMember = new ArrayList<String>();
 	private ONVillager(){
@@ -21,6 +22,7 @@ public class ONVillager {
 	public static void nightTurnVillager(String player){
 		Player p = Bukkit.getPlayer(player);
 		villagerMember.clear();
+		/*
 		msg = "%= %logo - Rule - &aOneNight %e夜のターン %=";
 		Messenger.message(null, p, msg, null, null, null, null);
 		msg = "あなたは村人になりました。";
@@ -36,11 +38,24 @@ public class ONVillager {
 		msg = "*このコマンドに意味はありませんが、全員がtargetコマンドを実行することで"
 				+ "昼のターンに移行します。";
 		Messenger.message(null, p, msg, null, null, null, null);
+		*/
+		path = "wolf_onni_first";
+		msg = WeAreWolf.japanese.getString(path);
+		Messenger.message(null, p, msg, null, null, null, null);
+
+		int line = 6;
+		for(int i = 0 ; i < line ; i++){
+			path = "wolf_onnivi_" + i;
+			msg = WeAreWolf.japanese.getString(path);
+			Messenger.message(null, p, msg, null, null, null, null);
+
+		}
 	}
 
 	public static void noonTurnVillager(String key) {
 		Player p = Bukkit.getPlayer(key);
 		villagerMember.add(key);
+		/*
 		msg = "%= %logo - Rule - &aOneNight %e昼のターン %=";
 		Messenger.message(null, p, msg, null, null, null, null);
 		msg = "長い夜が明けました。全員目をあけてください。";
@@ -51,6 +66,14 @@ public class ONVillager {
 		Messenger.message(null, p, msg, null, null, null, null);
 		msg = "投票数が一番多いプレイヤーが処刑されます。（同票の場合は同票の人全員が処刑されます";
 		Messenger.message(null, p, msg, null, null, null, null);
+		*/
+		int line = 5;
+		for(int i = 0 ; i < line ; i++){
+			path = "wolf_onno_" + i;
+			msg = WeAreWolf.japanese.getString(path);
+			Messenger.message(null, p, msg, null, null, null, null);
+
+		}
 
 	}
 

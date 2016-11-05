@@ -8,10 +8,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.doubledare1202.Messenger;
+import com.gmail.doubledare1202.WeAreWolf;
 import com.gmail.doubledare1202.WereWolfExecutor;
 
 public class ONWereWolf {
-	private static String msg;
+	private static String msg,path;
 
 	private static List<String> wereWolfMember = new ArrayList<String>();
 
@@ -22,15 +23,15 @@ public class ONWereWolf {
 	//OneNightの夜のターン　役職人狼へのメッセージ発信
 	public static void nightTurnWolf(String player){
 		wereWolfMember.clear();
-
 		Player p = Bukkit.getPlayer(player);
+		/*
 		msg = "%= %logo - Rule - &aOneNight &e夜のターン %=";
 		Messenger.message(null, p, msg, null, null, null, null);
 		msg = "あなたは人狼になりました。";
 		Messenger.message(null, p, msg, null, null, null, null);
 		msg = "役職 人狼 人狼陣営";
 		Messenger.message(null, p, msg, null, null, null, null);
-		msg = "勝利条件 他の人狼と協力し、人間に自分の正体をバレないようにする。";
+		msg = "勝利条件-他の人狼と協力し、人間に自分の正体をバレないようにする。";
 		Messenger.message(null, p, msg, null, null, null, null);
 		msg = "特殊能力-なし";
 		Messenger.message(null, p, msg, null, null, null, null);
@@ -39,13 +40,25 @@ public class ONWereWolf {
 		msg = "*このコマンドに意味はありませんが、全員がtargetコマンドを実行することで"
 				+ "昼のターンに移行します。";
 		Messenger.message(null, p, msg, null, null, null, null);
+		 */
+		path = "wolf_onni_first";
+		msg = WeAreWolf.japanese.getString(path);
+		Messenger.message(null, p, msg, null, null, null, null);
+
+		int line = 6;
+		for(int i = 0 ; i < line ; i++){
+			path = "wolf_onniww_" + i;
+			msg = WeAreWolf.japanese.getString(path);
+			Messenger.message(null, p, msg, null, null, null, null);
+
+		}
 
 	}
 
 	public static void noonTurnWolf(String key) {
 		Player p = Bukkit.getPlayer(key);
 		wereWolfMember.add(key);
-
+		/*
 		msg = "%= %logo - Rule - &aOneNight &e昼のターン %=";
 		Messenger.message(null, p, msg, null, null, null, null);
 		msg = "長い夜が明けました。全員目をあけてください。";
@@ -56,9 +69,35 @@ public class ONWereWolf {
 		Messenger.message(null, p, msg, null, null, null, null);
 		msg = "投票数が一番多いプレイヤーが処刑されます。（同票の場合は同票の人全員が処刑されます";
 		Messenger.message(null, p, msg, null, null, null, null);
+		 */
+		int line = 5;
+		for(int i = 0 ; i < line ; i++){
+			path = "wolf_onno_" + i;
+			msg = WeAreWolf.japanese.getString(path);
+			Messenger.message(null, p, msg, null, null, null, null);
+
+		}
 	}
 
-	public static void targetPlayer() {
+	public static void targetPlayer(CommandSender sender) {
+		StringBuilder sb = new StringBuilder();
+		List<String > wwl = ONTurnNight.WereWolfList;
+
+		path = "wolf_onni_ability";
+		msg = WeAreWolf.japanese.getString(path);
+		Messenger.message(sender, null, msg, null, null, null, null);
+		path = "wolf_onniww_friend";
+		msg = WeAreWolf.japanese.getString(path);
+		sb.append(msg);
+		for(int i = 0 ; i < wwl.size(); i++){
+			sb.append(wwl.get(i));
+			sb.append("&f、&6");
+		}
+		path = "wolf_onniww_desu";
+		msg = WeAreWolf.japanese.getString(path);
+		sb.append(msg);
+
+		Messenger.message(sender, null, sb.toString(), null, null, null, null);
 		WereWolfExecutor.countEndTargetPlayer++;
 		if(WereWolfExecutor.countEndTargetPlayer == WereWolfExecutor.getPlayerRoleMap().size()){
 			//昼の投票ターンに移動する
@@ -78,6 +117,11 @@ public class ONWereWolf {
 			msg = "人狼クラスあなたはもう投票しています";
 			Messenger.message(sender, null, msg, null, null, null, null);
 		}
+	}
+
+	//人狼のメンバーを消すようです。人狼だけ能力で使うから別にし得
+	public static void clear(){
+		wereWolfMember.clear();
 	}
 
 }

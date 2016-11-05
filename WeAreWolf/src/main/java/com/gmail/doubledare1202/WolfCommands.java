@@ -7,30 +7,20 @@ import org.bukkit.command.CommandSender;
 public class WolfCommands implements CommandExecutor {
 	private WeAreWolf plugin;
 	private Actions actions;
+	private String msg,m,path;
+
 
 	public WolfCommands(WeAreWolf instance, Actions actionsInstance) {
 		plugin = instance;
 		actions = actionsInstance;
 	}
 
-	private String msg, m;
-
 	public boolean onCommand(CommandSender sender, Command cmd,
 			String commandLabel, String[] args) {
-		/*
-		 * if(args.length > 0 && args[0].equalsIgnoreCase("test")){
-		 * if(args[1].equalsIgnoreCase("1")){ //sucsess //introduction
-		 * actions.help(sender,1); }else{
-		 * Messenger.message(sender,null,"elseにきたで",null,null,null,null); }
-		 * return true;
-		 *
-		 * }else
-		 */
 		if (args.length > 0 && args[0].equalsIgnoreCase("help")) {
 			if (sender.hasPermission("wearewolf.join")) {
 				// sucess
 				// help for sender
-				Messenger.message(sender, null, "helpきた", null, null, null, null);
 				actions.help(sender);
 			}
 			return true;
@@ -39,8 +29,14 @@ public class WolfCommands implements CommandExecutor {
 			if (sender.hasPermission("wearewolf.join")) {
 				if (args.length > 1 && args[1].equalsIgnoreCase("OneNight")) {
 					actions.rule(sender, "OneNight");
+				}else if(args.length > 1 && args[1].equalsIgnoreCase("Normal")){
+					actions.rule(sender, "Normal");
 				}else{
-					msg = "ゲームモード正しく入力してください";
+					path = "wolf_common_nogamerule";
+					msg = WeAreWolf.japanese.getString(path);
+					Messenger.message(sender, null, msg, null, null, null, null);
+					path = "wolf_common_gamerule";
+					msg = WeAreWolf.japanese.getString(path);
 					Messenger.message(sender, null, msg, null, null, null, null);
 				}
 			}
@@ -49,8 +45,14 @@ public class WolfCommands implements CommandExecutor {
 			if (sender.hasPermission("wearewolf.join")) {
 				if (args.length > 1 && args[1].equalsIgnoreCase("OneNight")) {
 					actions.role(sender, "OneNight");
+				}else if(args.length > 1 && args[1].equalsIgnoreCase("Normal")){
+					actions.rule(sender, "Normal");
 				}else{
-					msg = "ゲームモード正しく入力してください";
+					path = "wolf_common_nogamerule";
+					msg = WeAreWolf.japanese.getString(path);
+					Messenger.message(sender, null, msg, null, null, null, null);
+					path = "wolf_common_gamerule";
+					msg = WeAreWolf.japanese.getString(path);
 					Messenger.message(sender, null, msg, null, null, null, null);
 				}
 			}
@@ -92,14 +94,18 @@ public class WolfCommands implements CommandExecutor {
 						.equalsIgnoreCase("gs"))) {
 			if (sender.hasPermission("wearewolf.GM")) {
 				if (args.length < 2) {
-					msg = "ゲームルールを入力してください";
-					Messenger
-					.message(sender, null, msg, null, null, null, null);
+					path = "wolf_common_nogamerule";
+					msg = WeAreWolf.japanese.getString(path);
+					Messenger.message(sender, null, msg, null, null, null, null);
+					path = "wolf_common_gamerule";
+					msg = WeAreWolf.japanese.getString(path);
+					Messenger.message(sender, null, msg, null, null, null, null);
 
 				} else if (args.length < 4) {
-					msg = "参加者が足りません";
-					Messenger
-					.message(sender, null, msg, null, null, null, null);
+					//msg = "参加者が足りません";
+					path = "wolf_gson_numfew";
+					msg = WeAreWolf.japanese.getString(path);
+					Messenger.message(sender, null, msg, null, null, null, null);
 
 				} else {
 					actions.gameStart(sender, args);
@@ -116,9 +122,10 @@ public class WolfCommands implements CommandExecutor {
 		} else if (args.length > 0 && args[0].equalsIgnoreCase("target")) {
 			if (sender.hasPermission("wearewolf.join")) {
 				if (args.length < 2) {
-					msg = "能力の使用先のプレイヤーを入力してください";
-					Messenger
-					.message(sender, null, msg, null, null, null, null);
+					//msg = "能力の使用先のプレイヤーを入力してください";
+					path = "wolf_target_notarget";
+					msg = WeAreWolf.japanese.getString(path);
+					Messenger.message(sender, null, msg, null, null, null, null);
 				} else {
 					actions.target(sender, args[1]);
 				}
@@ -135,17 +142,19 @@ public class WolfCommands implements CommandExecutor {
 			if (sender.hasPermission("wearewolf.join")) {
 				// できた
 				if (args.length == 1) {
-					msg = "ささやきをおくるプレイヤーを入力してください";
-					Messenger
-					.message(sender, null, msg, null, null, null, null);
+					//msg = "ささやきをおくるプレイヤーを入力してください";
+					path = "wolf_whisper_nolistener";
+					msg = WeAreWolf.japanese.getString(path);
+					Messenger.message(sender, null, msg, null, null, null, null);
 				}
 				if (args.length > 1) {
 
 					actions.whisper(sender, args[1], args[2]);
 				} else {
-					msg = "ささやきをするメッセージを入力してください";
-					Messenger
-					.message(sender, null, msg, null, null, null, null);
+					//msg = "ささやきをするメッセージを入力してください";
+					path = "wolf_whisper_nomsg";
+					msg = WeAreWolf.japanese.getString(path);
+					Messenger.message(sender, null, msg, null, null, null, null);
 				}
 			}
 			return true;
@@ -197,8 +206,10 @@ public class WolfCommands implements CommandExecutor {
 
 			// defeat
 			// String msg = plugin.getConfig().getString("message");
-			Messenger.message(sender, null, "失敗", null, null, null, null);
-			return false;
+			path = "wolf_common_nocommand";
+			msg = WeAreWolf.japanese.getString(path);
+			Messenger.message(sender, null, msg, null, null, null, null);
+			return true;
 		}
 	}
 }

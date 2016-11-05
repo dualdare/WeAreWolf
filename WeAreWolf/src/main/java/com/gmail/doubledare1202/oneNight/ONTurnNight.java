@@ -1,17 +1,20 @@
 package com.gmail.doubledare1202.oneNight;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.command.CommandSender;
 
 import com.gmail.doubledare1202.Messenger;
 import com.gmail.doubledare1202.Role;
+import com.gmail.doubledare1202.WeAreWolf;
 import com.gmail.doubledare1202.WereWolfExecutor;
 
 public class ONTurnNight {
 	private static Map<String,Role> playerRoleMap = WereWolfExecutor.getPlayerRoleMap();
 	//private static int countSEandPT = 0;
-
+	public static List<String> WereWolfList = new ArrayList<String>();
 
 	private ONTurnNight(){
 
@@ -19,10 +22,15 @@ public class ONTurnNight {
 
 	public static void startNightTurn() {
 		//ONTurnNight.playerRoleMap = WereWolfExecutor.getPlayerRoleMap();
+		//人狼同市を知るときに使うリスト、最初に実装しないと間に合わない
 		for(String key : playerRoleMap.keySet()){
 			Role data = playerRoleMap.get(key);
-			//msg = key + "の役職は" + data + "です";
-			//plugin.message(sender,null,msg,null,null,null,null);
+			if(data == Role.WEREWOLF){
+				WereWolfList.add(key);
+			}
+		}
+		for(String key : playerRoleMap.keySet()){
+			Role data = playerRoleMap.get(key);
 			if(data == Role.WEREWOLF){
 				ONWereWolf.nightTurnWolf(key);
 			}else if(data == Role.PHANTOM){
@@ -46,32 +54,38 @@ public class ONTurnNight {
 				if(key.contentEquals(sender.getName())){
 					if(data == Role.WEREWOLF){
 						//				WereWolf.nightTurnWolf(key);
-						ONWereWolf.targetPlayer();
-						Messenger.message(sender, null, "target_ww", null, null, null, null);
+						ONWereWolf.targetPlayer(sender);
+						//Messenger.message(sender, null, "target_ww", null, null, null, null);
 					}else if(data == Role.PHANTOM){
 						ONPhantom.changePlayer(sender,player);
-						Messenger.message(sender, null, "target_phantom", null, null, null, null);
+						//Messenger.message(sender, null, "target_phantom", null, null, null, null);
 					}else if(data == Role.SEER){
 						ONSeer.divinePlayer(sender, player);
-						Messenger.message(sender, null, "target_Seer", null, null, null, null);
+						//Messenger.message(sender, null, "target_Seer", null, null, null, null);
 					}else if(data == Role.VILLAGER){
 						ONVillager.targetPlayer();
-						Messenger.message(sender, null, "target_villager", null, null, null, null);
+						//Messenger.message(sender, null, "target_villager", null, null, null, null);
 					}
 				}else{
 
-					String msg = "%logo&6あなたには役職がありません、";
-					Messenger.message(sender, null, msg, null, null, null, null);
+					//String msg = "%logo&6あなたには役職がありません、";
+					//Messenger.message(sender, null, msg, null, null, null, null);
 
 				}
 				/*
 				String msg = "targetコマンドを実行します！";
 				Messenger.message(sender, null, msg, null, null, null, null);
-				*/
+				 */
 			}
 		}else{
-			String msg = "%logo&eこのコマンド人狼に参加しているプレイヤーのみが実行できます。";
+			//String msg = "%logo&eこのコマンド人狼に参加しているプレイヤーのみが実行できます。";
+			String path = "wolf_common_nogs";
+			String msg = WeAreWolf.japanese.getString(path);
 			Messenger.message(sender, null, msg, null, null, null, null);
 		}
+	}
+
+	public static void clear(){
+		WereWolfList.clear();
 	}
 }

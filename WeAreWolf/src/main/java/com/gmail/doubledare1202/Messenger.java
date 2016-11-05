@@ -8,12 +8,15 @@ public class Messenger {
 	private Messenger(){
 
 	}
-	public static void message(CommandSender sender, Player player, String message, String value, String world, String target, Double cost) {
+	public static void message(CommandSender sender, Player player, String message, String four, String five, String six, Double cost) {
 		if (message != null) {
-			message = message.replaceAll("%world", world)
+			message = message
 					.replaceAll("%version", "1.0-alpha")
 					.replaceAll("%pl", "&eWe're Wolf")
 					.replaceAll("%logo", "&e[We're Wolf]")
+					.replaceAll("%4",four)
+					.replaceAll("%5",five)
+					.replaceAll("%6",six)
 					//.replaceAll("%pl", "&eWe're Wolf")
 					.replaceAll("%=", "&c====");
 					//.replaceAll("%sender", sender.getName());
